@@ -14,6 +14,7 @@ MUIP KAFA Management System
 10. Open a browser and go to http://localhost:8000 or as stated in the terminal
 
 #Use the following credentials to login
+
 Admin
 Username: admin@test
 Password: test
