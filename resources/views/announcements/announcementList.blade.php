@@ -1,10 +1,10 @@
 <x-app-layout>
     <div class="h-full">
         <div class="font-extrabold text-xl mt-2">
-            Announcements
+            Announcements testing
         </div>
         <div class="flex justify-end w-full mb-5 relative right-0">
-            @include('components.searchbar')     
+            @include('components.searchbar')
         </div>
         <div class="bg-white border border-slate-300 rounded-xl w-full p-4 overflow-y-auto h-4/5">
             <table class="table-auto w-full text-center">
