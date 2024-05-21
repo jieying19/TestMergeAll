@@ -1,7 +1,7 @@
 <x-app-layout>
     {{-- Title --}}
     <div class="font-extrabold text-xl mt-2">
-        Add Announcement
+        Add Announcement HIHI
     </div>
 
     <div class="py-12">
