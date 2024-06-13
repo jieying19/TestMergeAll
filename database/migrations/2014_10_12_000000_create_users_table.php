@@ -20,6 +20,8 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
+
+            // $table->foreign('activity_id')->references('id')->on('ManageActivityEntity')->onDelete('cascade');
         });
     }
 
