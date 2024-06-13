@@ -45,7 +45,7 @@
         </main>
     </div>
 
-    <footer class="bg-gray-700 flex justify-center p-6 text-white"> PMMS &copy 2023</footer>
+    <footer class="bg-gray-700 flex justify-center p-6 text-white"> KAFA 2024</footer>
 
     @stack('modals')
 
