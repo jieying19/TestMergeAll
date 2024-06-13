@@ -112,10 +112,10 @@
         </a>
         @endif
 
-        {{-- Duty Roster --}}
+        {{-- Student --}}
         {{-- Only Admin and Cashier can access this module --}}
         @if (Auth::user()->role == 'admin' || Auth::user()->role == 'cashier')
-        <a href="{{ route('DutyRoster') }}">
+        <a href="{{ route('ManageStudentRegistration.StudentRegistrationList') }}">
             <x-nav-item>
                 <div class="self-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -125,7 +125,7 @@
                     </svg>
                 </div>
                 <div>
-                    DUTY ROSTER
+                    STUDENT REGISTRATION
                 </div>
             </x-nav-item>
         </a>

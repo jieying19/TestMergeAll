@@ -7,7 +7,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AnnouncementController;
-use App\Http\Controllers\DutyRosterController;
+use App\Http\Controllers\StudentRegistrationController;
 
 // Change this to change the default page
 Route::get('/', function () {
@@ -39,13 +39,20 @@ Route::middleware([
     })->name('dashboard');
 });
 
-// Duty Roster  Module
-Route::get('/dutyRoster', [DutyRosterController::class, 'index'])->name('DutyRoster');
-Route::get('/dutyRoster/add', [DutyRosterController::class, 'create'])->name('addDuty');
-Route::post('/dutyRoster/store', [DutyRosterController::class, 'store'])->name('storeDuty');
-Route::get('/dutyRoster/edit/{id}', [DutyRosterController::class, 'edit'])->name('editDuty');
-Route::post('/dutyRoster/update/{id}', [DutyRosterController::class, 'update'])->name('updateDuty');
-Route::post('/dutyRoster/delete/{id}', [DutyRosterController::class, 'destroy'])->name('deleteDuty');
+// Student Registration  Module
+Route::get('/studentRegistration', [StudentRegistrationController::class, 'index'])->name('ManageStudentRegistration.StudentRegistrationList');
+Route::get('/studentRegistration/add', [StudentRegistrationController::class, 'create'])->name('ManageStudentRegistration.AddStudentRegistrationForm');
+Route::post('/studentRegistration/store', [StudentRegistrationController::class, 'store'])->name('storeStudentRegistration');
+Route::get('/studentRegistration/show/{student_id}', [StudentRegistrationController::class, 'show'])->name('ManageStudentRegistration.ViewStudentRegistrationForm');
+Route::get('/studentRegistration/edit/{id}', [StudentRegistrationController::class, 'edit'])->name('ManageStudentRegistration.EditStudentRegistrationForm');
+Route::post('/studentRegistration/update/{id}', [StudentRegistrationController::class, 'update'])->name('ManageStudentRegistration.UpdateStudentRegistration');
+Route::post('/studentRegistration/delete/{id}', [StudentRegistrationController::class, 'destroy'])->name('deleteStudentRegistration');
+Route::post('/studentRegistration/{student_id}/update-status', [StudentRegistrationController::class, 'updateStatus'])->name('updateStudentStatus');
+Route::post('/studentRegistrationReport/view', [StudentRegistrationController::class, 'indexStudentReport'])->name('ManageStudentRegistration.ViewStudentRegistrationReport');
+Route::post('/studentRegistrationReport', [StudentRegistrationController::class, 'indexStudentReport'])->name('studentRegistrationReport');
+Route::get('/studentRegistrationReport/csv', [StudentRegistrationController::class, 'exportStudentCSV'])->name('student.csv');
+Route::get('/studentRegistrationReport/data/{range}', [StudentRegistrationController::class, 'getAgeData'])->name('ManageStudentAgeData');
+
 
 // Payment Module
 // Only Cashier can access this route
