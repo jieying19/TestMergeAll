@@ -16,10 +16,21 @@ class PaymentFactory extends Factory
      */
     public function definition(): array
     {
+        $amountOwed = 500;
+        $amountPayed = $this->faker->randomFloat(2, 0, $amountOwed);
+
         return [
-            'total_price' => $this->faker->randomFloat(2, 0, 999.99),
-            'payment_method' => $this->faker->randomElement(['Cash', 'QR']),
-            'cash_amount' => $this->faker->randomFloat(2, 0, 999.99),
+            'userName' => $this->faker->randomElement(['Wan', 'Junta', 'Abby', 'Jie']),
+            'amountOwed' => $amountOwed,
+            'amountPayed' => $amountPayed,
+            'paymentMethod' => $this->faker->randomElement(['Card','E-Wallet']),
+            'lastPayment' => $this->faker->dateTime(),
+            'cardNumber' => $this->faker->numberBetween(null, 99),
+            'bankName' => $this->faker->randomElement(['Maybank','Bank Islam','RHB']),
+            'cardCVV' => $this->faker->numberBetween(100, 999),
+            'cardExpDate' => $this->faker->dateTime(),
+            'cardHolderName' => $this->faker->randomElement(['Wan', 'Junta', 'Abby', 'Jie']),
+            'paymentStatus' => null
         ];
     }
 }

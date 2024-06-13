@@ -13,9 +13,17 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->double('total_price')->nullable();
-            $table->string('payment_method')->nullable();
-            $table->double('cash_amount')->nullable();
+            $table->string('userName')->nullable();
+            $table->float('amountOwed')->nullable();
+            $table->float('amountPayed')->nullable();
+            $table->string('paymentMethod')->nullable();
+            $table->date('lastPayment')->nullable();
+            $table->string('cardNumber')->nullable();
+            $table->string('bankName')->nullable();
+            $table->integer('cardCVV')->nullable();
+            $table->string('cardExpDate')->nullable();
+            $table->string('cardHolderName')->nullable();
+            $table->string('paymentStatus')->nullable();
             $table->timestamps();
         });
     }

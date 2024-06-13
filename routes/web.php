@@ -47,32 +47,23 @@ Route::get('/dutyRoster/edit/{id}', [DutyRosterController::class, 'edit'])->name
 Route::post('/dutyRoster/update/{id}', [DutyRosterController::class, 'update'])->name('updateDuty');
 Route::post('/dutyRoster/delete/{id}', [DutyRosterController::class, 'destroy'])->name('deleteDuty');
 
-// Payment Module
-// Only Cashier can access this route
-Route::middleware('role:cashier')->group(function () {
-    // Cart
-    Route::get('/cart', [PaymentController::class, 'index'])->name('cart')->middleware('role:cashier');
-    Route::post('/cart', [PaymentController::class, 'storeCart'])->name('cart.store');
-    Route::delete('/cart/{id}', [PaymentController::class, 'destroyCart'])->name('cart.destroy');
-    Route::post('/cart/clear', [PaymentController::class, 'destroyAll'])->name('cart.destroyAll');
-    Route::get('/cart/{id}/increment', [PaymentController::class, 'incrementQuantity'])->name('cart.plus');
-    Route::get('/cart/{id}/decrement', [PaymentController::class, 'decrementQuantity'])->name('cart.minus');
-    // Payment
-    Route::get('/cart/checkout', [PaymentController::class, 'paymentIndex'])->name('payment.pay');
-    Route::post('/cart/checkout', [PaymentController::class, 'storePayment'])->name('payment.store');
-    // Change
-    Route::get('/change/{payment}', [PaymentController::class, 'changeIndex'])->name('payment.change');
+// View Payment Module
+// Only Admin can access this route
+Route::middleware('role:admin')->group(function () {
+    // View list of payments
+    Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index')->middleware('role:admin');
+    Route::get('/payment/create', [PaymentController::class, 'create'])->name('payment.create');
+    Route::post('/payment/insert', [PaymentController::class, 'insert'])->name('payment.insert');
+    Route::get('/payment/edit/{id}', [PaymentController::class, 'edit'])->name('payment.edit');
+    Route::post('/payment/update/{id}', [PaymentController::class, 'update'])->name('payment.update');
+    Route::post('/payment/delete/{id}', [PaymentController::class, 'delete'])->name('payment.delete');
 });
 
-// Inventory Module
-//Only Admin and Coordinator can access this route
-Route::middleware('role:admin,coordinator')->group(function () {
-    Route::get('/products', [ProductController::class, 'index'])->name('product');
-    Route::get('/products/add', [ProductController::class, 'create'])->name('addInventory');
-    Route::post('/products/store', [ProductController::class, 'store'])->name('storeInventory');
-    Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('editInventory');
-    Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('updateInventory');
-    Route::post('/products/delete/{id}', [ProductController::class, 'destroy'])->name('deleteInventory');
+// View Payment Module
+// Only User/Cashier can access this route
+Route::middleware('role:cashier')->group(function () {
+    Route::get('/viewPayment', [PaymentController::class, 'userIndex'])->name('payment.userIndex')->middleware('role:cashier');
+    Route::post('/viewPayment/insert/{userName}', [PaymentController::class, 'updateUser'])->name('payment.userInsert');
 });
 
 //Report Module
