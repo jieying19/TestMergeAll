@@ -23,11 +23,38 @@ class UserSeeder extends Seeder
         ]);
         
         User::factory()->create([
-            'name' => "Cashier",
-            'matric_id' => "CB19001",
+            'name' => "Wan",
+            'matric_id' => "CB21042",
             'phone_num' => "0123456789",
             'role' => "cashier",
-            'email' => "cashier@test",
+            'email' => "wan@test",
+            'password' => bcrypt("test"), // password
+        ]);
+
+        User::factory()->create([
+            'name' => "Junta",
+            'matric_id' => "CB21001",
+            'phone_num' => "0123456789",
+            'role' => "cashier",
+            'email' => "junta@test",
+            'password' => bcrypt("test"), // password
+        ]);
+
+        User::factory()->create([
+            'name' => "Abby",
+            'matric_id' => "CB21002",
+            'phone_num' => "0123456789",
+            'role' => "cashier",
+            'email' => "abby@test",
+            'password' => bcrypt("test"), // password
+        ]);
+
+        User::factory()->create([
+            'name' => "Jie Ying",
+            'matric_id' => "CB21003",
+            'phone_num' => "0123456789",
+            'role' => "cashier",
+            'email' => "jie@test",
             'password' => bcrypt("test"), // password
         ]);
         
