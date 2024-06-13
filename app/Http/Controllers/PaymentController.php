@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Payment;
-use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
+    //Below are payment functions for admin
     /**
      * Display a listing of the resource.
      */
@@ -21,247 +23,89 @@ class PaymentController extends Controller
             return redirect()->route('login');
         }
 
-        $carts = Cart::join('products', 'products.id', '=', 'carts.product_id')
-            ->select('carts.id', 'products.product_id', 'products.product_name', 'products.product_price', 'carts.quantity', 'carts.created_at', 'carts.payment_id')
-            ->where('carts.payment_id', '=', null)
-            ->where('carts.user_id', '=', auth()->user()->id)
-            ->orderBy('carts.created_at', 'desc')
-            ->get();
+        Payment::where('amountPayed', '=', 0)->update(['paymentStatus' => 'Not Payed']);
+        Payment::where('amountPayed', '>', 0)->whereColumn('amountPayed', '<', 'amountOwed')->update(['paymentStatus' => 'Partially Payed']);
+        Payment::whereColumn('amountPayed', '>', 'amountOwed')->update(['paymentStatus' => 'Fully Payed']);
 
-        $carts->each(function ($cart) {
-            $cart->total = $cart->product_price * $cart->quantity;
-        });
-
-        $totalPrice = $carts->sum('total');
-
-
-        // dd($carts);
-
-        return view('payment.cart', compact('carts', 'totalPrice'));
-    }
-
-    public function paymentIndex()
-    {
-        $carts = Cart::where('user_id', '=', auth()->user()->id)
-            ->where('payment_id', '=', null)
-            ->get();
-
-        // If cart is empty, redirect to cart page
-        if ($carts->isEmpty()) {
-            return redirect()->route('cart')->with('error', 'Cart is empty!');
-        }
-
-        $carts->each(function ($cart) {
-            $cart->total = $cart->product->product_price * $cart->quantity;
-        });
-
-        $totalPrice = $carts->sum('total');
-
-        // dd($carts, $totalPrice);
-
-        return view('payment.payment', compact('totalPrice'));
-    }
-
-    public function changeIndex(Payment $payment)
-    {
-        try {
-            $payment = Payment::findOrFail($payment->id);
-        } catch (ModelNotFoundException) {
-            return redirect()->route('cart')->with('error', 'Payment not found!');
-        }
-
-        $payment = Cart::join('products', 'products.id', '=', 'carts.product_id')
-            ->join('payments', 'payments.id', '=', 'carts.payment_id')
-            ->select('products.product_id', 'products.product_name', 'products.product_price', 'carts.quantity', 'payments.id', 'carts.created_at', "payments.total_price", "payments.payment_method", "payments.cash_amount")
-            ->where('carts.payment_id', '=', $payment->id)
-            ->orderBy('carts.created_at', 'desc')
-            ->get();
-
-        $totalPrice = $payment->last()->total_price;
-        $cashAmount = $payment->last()->cash_amount;
-        $totalChange = $cashAmount - $totalPrice;
-
-        // dd($payment, $totalPrice);
-
-        return view('payment.change', compact('payment', 'totalPrice', 'totalChange', 'cashAmount'));
-    }
-
-    /**
-     * Store a newly created resource in Cart.
-     */
-    public function storeCart(Request $request)
-    {
-        try {
-            $product = Product::where('product_id', '=', $request->product_id)->firstOrFail();
-        } catch (ModelNotFoundException) {
-            return redirect()->route('cart')->with('error', 'Product barcode not exist!');
-        }
-        // dd($request, $product);
-        // dd($product->id);
-        // If product already exist in cart, update quantity
-        $cartExist = Cart::join('products', 'products.id', '=', 'carts.product_id')
-            ->select('carts.id', 'carts.product_id', 'carts.quantity', 'carts.user_id', 'carts.payment_id')
-            ->where('carts.user_id', '=', auth()->user()->id)
-            ->where('carts.product_id', '=', $product->id)
-            ->where('carts.payment_id', '=', null)
-            ->first();
+        $payments = Payment::all();
         
-        // dd($cartExist);
-        
-        if ($cartExist) {
-            // Check if item quantity is more than stock
-            if ($cartExist->quantity >= $product->product_quantity) {
-                return redirect()->route('cart')->with('error', 'Product quantity cannot more than stock!');
-            } else {
-                $cartExist->quantity++;
-            }
-            // dd($cartExist->quantity, $cartExist->save());
-            if ($cartExist->save()) {
-                return redirect()->route('cart')->with('success', 'Product added to cart successfully!');
-            } else {
-                return redirect()->route('cart')->with('error', 'Failed to add product to cart!');
-            }
-        }
-
-        // If product quantity = 0, cannot add to cart
-        if ($product->product_quantity <= 0) {
-            return redirect()->route('cart')->with('error', 'Product out of stock!');
-        }
-
-        $cart = new Cart();
-        $cart->user_id = auth()->user()->id;
-        $cart->product_id = $product->id;
-
-        if ($request->quantity == null) {
-            $cart->quantity = 1;
-        } else {
-            $cart->quantity = $request->quantity;
-        }
-
-        if ($cart->save()) {
-            return redirect()->route('cart')->with('success', 'Product added to cart successfully!');
-        } else {
-            return redirect()->route('cart')->with('error', 'Failed to add product to cart!');
-        }
+        return view('payment.index', ['payments' => $payments]);
     }
 
-    /**
-     * Store a newly created resource in Payment.
-     */
-    public function storePayment(Request $request)
-    {
-        // check whether amount is enough or not
-        if ($request->cash_amount < $request->total_price) {
-            return redirect()->back()->with('error', 'Amount Paid is not enough!');
-        }
+    public function create(){
+        return view('payment.create');
+    }
 
-        $payment = new Payment();
-        $payment->total_price = $request->total_price;
-        $payment->payment_method = $request->payment_method;
-        $payment->cash_amount = $request->cash_amount;
+    public function insert(Request $request){
+        $payment = new Payment;
+        Payment::orderBy('id')->get();
+        $payment->userName = $request->name;
+        $payment->amountOwed = $request->owed;
+        $payment->amountPayed = $request->payed;
+        $payment->paymentMethod = $request->methodpay;
+        $payment->lastPayment = $request->lastpay;
+
+        $payment->cardNumber = null;
+        $payment->bankName = null;
+        $payment->cardCVV = null;
+        $payment->cardExpDate = null;
+        $payment->cardHolderName = null;
+
+        $payment->save();
+        return redirect()->route('payment.index')->with('success', 'New payment added successfully');
+    }
+
+    public function edit($id)
+    {
+        $paymentDetails = Payment::find($id);
+        //dd($paymentDetails);
+        return view('payment.edit', compact('paymentDetails'));
+    }
+
+    public function update(Payment $payment, Request $request)
+    {
+        $payment = Payment::find($request->id);
+        $payment->userName = $request->name;
+        $payment->amountOwed = $request->owed;
+        $payment->amountPayed = $request->payed;
+        $payment->paymentMethod = $request->methodpay;
+        $payment->lastPayment = $request->lastpay;
         $payment->save();
 
-        $carts = Cart::where('user_id', '=', auth()->user()->id)
-            ->where('payment_id', '=', null)
-            ->get();
-        
-        // Update product quantity in product table
-        $carts->each(function ($cart) {
-            $product = Product::find($cart->product_id);
-            $product->product_quantity -= $cart->quantity;
-            $product->save();
-        });
-
-        $carts->each(function ($cart) use ($payment) {
-            $cart->payment_id = $payment->id;
-            $cart->save();
-        });
-
-        return redirect()->route('payment.change', $payment->id)->with('success', 'Payment success!');
+        return redirect()->route('payment.index')->with('success', 'User payment updated successfully');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function incrementQuantity($id)
-    {
-        $cart = Cart::find($id);
-        if (!$cart) {
-            return redirect()->back()->with('error', 'Product not found.');
-        }
-
-        // Check if item quantity is more than stock
-        if ($cart->quantity >= $cart->product->product_quantity) {
-            return redirect()->back()->with('error', 'Product quantity cannot more than stock!');
-        } else {
-            $cart->quantity++;
-        }
-
-        if ($cart->save()) {
-            return redirect()->back()->with('success', 'Quantity updated successfully.');
-        } else {
-            return redirect()->back()->with('error', 'Failed to update quantity.');
-        }
-    }
-
-    public function decrementQuantity($id)
-    {
-        $cart = Cart::find($id);
-        if (!$cart) {
-            return redirect()->back()->with('error', 'Product not found.');
-        }
-
-        if ($cart->quantity == 1) {
-            PaymentController::destroyCart($id);
-            return redirect()->back()->with('success', 'Product deleted from cart!');
-        } else {
-            $cart->quantity--;
-        }
-
-        if ($cart->save()) {
-            return redirect()->back()->with('success', 'Quantity updated successfully.');
-        } else {
-            return redirect()->back()->with('error', 'Failed to update quantity.');
-        }
+    public function delete($id){
+        $payment = Payment::find($id);
+        $payment->delete();
+        return redirect()->route('payment.index')->with('success', 'Product deleted successfully');
     }
 
 
-    /**
-     * Remove the specified resource from Cart.
-     */
-    public function destroyCart($id)
-    {
-        $cart = Cart::find($id);
-        if (!$cart) {
-            return redirect()->route('cart')->with('error', 'Cannot delete product!');
+    //Below are controller functions for user/cashier
+    public function userIndex(){
+        if (!auth()->user()) {
+            // Redirect to login page
+            return redirect()->route('login');
         }
 
-        if ($cart->delete()) {
-            return redirect()->route('cart')->with('success', 'Product deleted from cart successfully!');
-        } else {
-            return redirect()->route('cart')->with('error', 'Failed to delete product from cart!');
-        }
+        $payments = Payment::all();
+
+        return view('payment.userIndex', ['payments' => $payments], compact('payments'));
     }
 
-    /**
-     * Remove the all from Cart.
-     */
-    public function destroyAll()
+    public function updateUser(Payment $payment, Request $request)
     {
-        $carts = Cart::where('user_id', '=', auth()->user()->id)
-            ->where('payment_id', '=', null)
-            ->get();
+        $payment = Payment::where('userName', '=', $request->userName)->first();
+        $payment->cardNumber = $request->input('cardNum');
+        $payment->bankName = $request->category;
+        $payment->cardCVV = $request->cvv;
+        $payment->amountPayed += $request->amountPay;
+        $payment->cardExpDate = $request->expiration;
+        $payment->cardHolderName = $request->holderName;
+        $payment->lastPayment = Carbon::now();
+        $payment->save();
 
-        if ($carts->isEmpty()) {
-            return redirect()->route('cart')->with('error', 'Cart is empty!');
-        }
-
-        // dd($carts);
-
-        foreach ($carts as $cart) {
-            $cart->delete();
-        }
-
-        return redirect()->route('cart')->with('success', 'All product deleted from cart successfully!');
+        return redirect()->route('payment.userIndex')->with('success', 'Your payment updated successfully');
     }
 }

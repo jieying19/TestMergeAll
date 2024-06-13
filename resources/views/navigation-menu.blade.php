@@ -6,9 +6,9 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center p-1">
                     <a href="{{ route('announcement') }}">
-                        <img src="{{ asset('images/petakom-logo.png') }}" alt="PMMS" width="80" height="80" class="p-1"/>
+                        <img src="{{ asset('images/kafa-logo.png') }}" alt="kafa" width="40" height="80" class="p-1"/>
                     </a>
-                    <p>PMMS</p>
+                    <p>MUIP KAFA Management System</p>
                 </div>
             </div>
 
