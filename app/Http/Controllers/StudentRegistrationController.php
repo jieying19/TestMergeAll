@@ -55,6 +55,7 @@ class StudentRegistrationController extends Controller
         $student->student_health = $request->student_health;
         $student->student_birthPlace = $request->student_birthPlace;
         $student->student_homeAddress = $request->student_homeAddress;
+        $student->student_regStatus = "Pending";
 
       
         $student->save();
@@ -83,9 +84,27 @@ class StudentRegistrationController extends Controller
     /**
      * Update the specified student registration in databse.
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, Student $student_id)
     {
-        $student = Student::find($request->student_id);
+        //Validate the request data
+        $request->validate([
+            'student_name'=>'required|string',
+            'student_age'=>'required|integer',
+            'student_gender'=>'required|string',
+            'student_birthRegNo'=>'required|string',
+            'student_ic'=>'required|string|max:12',
+            'student_health'=>'required|string',
+            'student_birthPlace'=>'required|string',
+            'student_homeAddress'=>'required|string',
+            ]);
+
+            //Find the student by ID and update the details
+            $student = Student::find($student_id);
+            if(!$student){
+                return redirect()->back()->with('error','Student not found');
+
+            }
+
         $student->student_name = $request->student_name;
         $student->student_age = $request->student_age;
         $student->student_gender = $request->student_gender;
@@ -99,23 +118,18 @@ class StudentRegistrationController extends Controller
         return redirect()->route('ManageStudentRegistration.StudentRegistrationList')->with('success', 'Student registration updated successfully');
     }
 
-    public function updateStatus(Request $request, $student_id)
-{
-    // Validate the request data
-    $request->validate([
-        'status' => 'required|in:approved,rejected',
-    ]);
+    public function updateStatus(Request $request)
+    {
+        $student = Student::find($request->student_id);
+        if($student)
+        {
+                $student->student_regStatus = $request->status;
+                $student->save();
+                return response()->json(['success' => true]);
+        }
 
-    // Find the student by ID
-    $student = Student::find($student_id);
-
-    // Update the student's status based on the action
-    $student->student_regStatus = $request->status;
-    $student->save();
-
-    // Redirect back with a success message
-    return redirect()->back()->with('success', 'Student status updated successfully');
-}
+        return response()->json(['success'=>false], 400);
+    }
 
 
 

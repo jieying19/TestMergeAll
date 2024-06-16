@@ -59,7 +59,7 @@ Route::get('/studentRegistration/show/{student_id}', [StudentRegistrationControl
 Route::get('/studentRegistration/edit/{id}', [StudentRegistrationController::class, 'edit'])->name('ManageStudentRegistration.EditStudentRegistrationForm');
 Route::post('/studentRegistration/update/{id}', [StudentRegistrationController::class, 'update'])->name('ManageStudentRegistration.UpdateStudentRegistration');
 Route::post('/studentRegistration/delete/{id}', [StudentRegistrationController::class, 'destroy'])->name('deleteStudentRegistration');
-Route::post('/studentRegistration/{student_id}/update-status', [StudentRegistrationController::class, 'updateStatus'])->name('updateStudentStatus');
+Route::post('/studentRegistration/{student_id}/update-status', [StudentRegistrationController::class, 'updateStatus'])->name('student-registration.updateStudentStatus');
 Route::post('/studentRegistrationReport/view', [StudentRegistrationController::class, 'indexStudentReport'])->name('ManageStudentRegistration.ViewStudentRegistrationReport');
 Route::post('/studentRegistrationReport', [StudentRegistrationController::class, 'indexStudentReport'])->name('studentRegistrationReport');
 Route::get('/studentRegistrationReport/csv', [StudentRegistrationController::class, 'exportStudentCSV'])->name('student.csv');

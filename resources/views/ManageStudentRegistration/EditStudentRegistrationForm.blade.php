@@ -8,7 +8,7 @@
          
         </div>
         <div class="bg-white border border-slate-300 rounded-xl w-full p-3">
-            <form action="{{ route('ManageStudentRegistration.UpdateStudentRegistrationForm', $student['student_id']) }}" method="post">
+            <form action="{{ route('ManageStudentRegistration.UpdateStudentRegistration', $student['student_id']) }}" method="post">
                 @csrf
                 <table class="rounded-xl px-4 w-full p-2">
                     <tbody >
@@ -29,24 +29,24 @@
                             </select></td>
                         </tr>
                         <tr>
-                            <td class="px-5 py-2 pr-0"><label>Student Birth Registration Number</label></td>
+                            <td class="px-6 py-2 w-2/6"><label>Student Birth Registration Number</label></td>
                             <td class="px-11 py-2"><input type="text" name="student_birthRegNo" value="{{ $student->student_birthRegNo}}" class="form-control w-full rounded-xl bg-gray-200 border border-slate-400" required></td>
                         </tr>
                         <tr>
-                            <td class="px-4 py-2"><label>Student IC</label></td>
-                            <td class="px-4 py-2"><input type="text" name="student_ic" value="{{ $student->student_ic}}"  class="form-control rounded-xl w-full bg-gray-200 border border-slate-400" required></td>
+                            <td class="px-6 py-2 w-2/6"><label>Student IC</label></td>
+                            <td class="px-11 py-2"><input type="text" name="student_ic" value="{{ $student->student_ic}}"  class="form-control rounded-xl w-full bg-gray-200 border border-slate-400" required></td>
                         </tr>
                         <tr>
-                            <td class="px-4 py-2"><label>Student Health</label></td>
-                            <td class="px-4 py-2"><input type="text" name="student_health" value="{{ $student->student_health}}"   class="form-control rounded-xl w-full bg-gray-200 border border-slate-400" required></td>
+                            <td class="px-6 py-2 w-2/6"><label>Student Health</label></td>
+                            <td class="px-11 py-2"><input type="text" name="student_health" value="{{ $student->student_health}}"   class="form-control rounded-xl w-full bg-gray-200 border border-slate-400" required></td>
                         </tr>
                         <tr>
-                            <td class="px-4 py-2"><label>Student Birth Place</label></td>
-                            <td class="px-4 py-2"><input type="text" name="student_birthPlace" value="{{ $student->student_birthPlace}}"  class="form-control rounded-xl w-full bg-gray-200 border border-slate-400" required></td>
+                            <td class="px-6 py-2 w-2/6"><label>Student Birth Place</label></td>
+                            <td class="px-11 py-2"><input type="text" name="student_birthPlace" value="{{ $student->student_birthPlace}}"  class="form-control rounded-xl w-full bg-gray-200 border border-slate-400" required></td>
                         </tr>
                         <tr>
-                            <td class="px-4 py-2"><label>Student Home Address</label></td>
-                            <td class="px-4 py-2"><input type="text" name="student_homeAddress" value="{{ $student->student_homeAddress}}"   class="form-control rounded-xl w-full bg-gray-200 border border-slate-400" required></td>
+                            <td class="px-6 py-2 w-2/6"><label>Student Home Address</label></td>
+                            <td class="px-11 py-2"><input type="text" name="student_homeAddress" value="{{ $student->student_homeAddress}}"   class="form-control rounded-xl w-full bg-gray-200 border border-slate-400" required></td>
                         </tr>
                     </tbody>
                 </table>
