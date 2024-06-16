@@ -7,7 +7,7 @@
         <div class="flex justify-end w-full mb-5 relative right-0">
             @include('components.searchbar')
         </div>
-        {{-- Error message if there is exsiting product id --}}
+        {{-- Error message if there is exsiting student id --}}
         @if (session('error'))
             <div class="bg-red-500 p-1 mx-1 mb-3 rounded-xl text-white text-center">
                 {{ session('error') }}
