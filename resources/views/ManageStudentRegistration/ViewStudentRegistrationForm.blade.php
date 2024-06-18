@@ -15,62 +15,62 @@
                         <tr>
                             <td class="px-4 py-2"><label>Student Name</label></td>
                             <td class="px-4 py-2">
-                                <span class="form-control px-2 py-2 rounded-xl w-full bg-gray-200 border border-slate-400">{{ $student->student_name }}</span>
+                                <p class="form-control px-2 py-2 rounded-xl w-full bg-white border border-slate-400">{{ $student->student_name }}</p>
                             </td>
                         </tr>
                         <tr>
                             <td class="px-4 py-2"><label>Student Age</label></td>
                             <td class="px-4 py-2">
-                                <span class="form-control px-2 py-2 rounded-xl w-full bg-gray-200 border border-slate-400">{{ $student->student_age }}</span>
+                                <p class="form-control px-2 py-2 rounded-xl w-full bg-white border border-slate-400">{{ $student->student_age }}</p>
                             </td>
                         </tr>
                         <tr>
                             <td class="px-4 py-2"><label>Student Gender</label></td>
-                            <td class="px-4 py-2">
-                                <span class="form-control px-2 py-2 rounded-xl w-full bg-gray-200 border border-slate-400">{{ $student->student_gender }}</span>
+                            <td class="px-4 py-2" class="form-control px-2 py-2 rounded-xl w-full bg-white border border-slate-400">
+                                <p class="form-control px-2 py-2 rounded-xl w-full bg-white border border-slate-400">{{ $student->student_gender }}</p>
                             </td>
                         </tr>
                         <tr>
                             <td class="px-4 py-2"><label>Student Birth Registration Number</label></td>
-                            <td class="px-4 py-2">
-                                <span class="form-control px-2 py-2 rounded-xl bg-gray-200 border border-slate-400">{{ $student->student_birthRegNo }}</span>
+                            <td class="px-4 py-2" class="form-control px-2 py-2 rounded-xl w-full bg-white border border-slate-400">
+                                <p class="form-control px-2 py-2 rounded-xl w-full bg-white border border-slate-400">{{ $student->student_birthRegNo }}</p>
                             </td>
                         </tr>
                         <tr>
                             <td class="px-4 py-2"><label>Student IC</label></td>
                             <td class="px-4 py-2">
-                                <span class="form-control px-2 py-2 rounded-xl w-full bg-gray-200 border border-slate-400">{{ $student->student_ic }}</span>
+                                <p class="form-control px-2 py-2 rounded-xl w-full bg-white border border-slate-400">{{ $student->student_ic }}</p>
                             </td>
                         </tr>
                         <tr>
                             <td class="px-4 py-2"><label>Student Health</label></td>
                             <td class="px-4 py-2">
-                                <span class="form-control px-2 py-2 rounded-xl w-full bg-gray-200 border border-slate-400">{{ $student->student_health }}</span>
+                                <p class="form-control px-2 py-2 rounded-xl w-full bg-white border border-slate-400">{{ $student->student_health }}</p>
                             </td>
                         </tr>
                         <tr>
                             <td class="px-4 py-2"><label>Student Birth Place</label></td>
                             <td class="px-4 py-2">
-                                <span class="form-control px-2 py-2 rounded-xl w-full bg-gray-200 border border-slate-400">{{ $student->student_birthPlace }}</span>
+                                <p class="form-control px-2 py-2 rounded-xl w-full bg-white border border-slate-400">{{ $student->student_birthPlace }}</p>
                             </td>
                         </tr>
                         <tr>
                             <td class="px-4 py-2"><label>Student Birthday</label></td>
                             <td class="px-4 py-2">
-                                <span class="form-control px-2 py-2 rounded-xl w-full bg-gray-200 border border-slate-400">{{ \Carbon\Carbon::createFromFormat('ymd', substr($student->student_ic, 0, 6))->format('d/m/Y') }}</span>
+                                <p class="form-control px-2 py-2 rounded-xl w-full bg-white border border-slate-400">{{ \Carbon\Carbon::createFromFormat('ymd', substr($student->student_ic, 0, 6))->format('d/m/Y') }}</p>
                             </td>
                         </tr>
                         <tr>
                             <td class="px-4 py-2"><label>Student Home Address</label></td>
                             <td class="px-4 py-2">
-                                <span class="form-control px-2 py-2 rounded-xl w-full bg-gray-200 border border-slate-400">{{ $student->student_homeAddress }}</span>
+                                <p class="form-control px-2 py-2 rounded-xl w-full bg-white border border-slate-400">{{ $student->student_homeAddress }}</p>
                             </td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="flex justify-end px-4 py-2">
                     <div class="px-4">
-                        <button class="btn border border-slate-400 bg-gray-400 px-3 py-2 rounded-xl hover:bg-gray-300" formaction="{{ route('ManageStudentRegistration.StudentRegistrationList') }}">Back</button>
+                    <a href="{{ route('ManageStudentRegistration.StudentRegistrationList') }}" class="btn border border-slate-400 bg-gray-400 px-3 py-2 rounded-xl hover:bg-gray-300">Back</a>
                     </div>
                 </div>
             </form>

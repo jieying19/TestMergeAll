@@ -84,27 +84,26 @@ class StudentRegistrationController extends Controller
     /**
      * Update the specified student registration in databse.
      */
-    public function update(Request $request, Student $student_id)
+    public function update(Request $request, $student_id)
     {
-        //Validate the request data
+        // Validate the request data
         $request->validate([
-            'student_name'=>'required|string',
-            'student_age'=>'required|integer',
-            'student_gender'=>'required|string',
-            'student_birthRegNo'=>'required|string',
-            'student_ic'=>'required|string|max:12',
-            'student_health'=>'required|string',
-            'student_birthPlace'=>'required|string',
-            'student_homeAddress'=>'required|string',
-            ]);
-
-            //Find the student by ID and update the details
-            $student = Student::find($student_id);
-            if(!$student){
-                return redirect()->back()->with('error','Student not found');
-
-            }
-
+            'student_name' => 'required|string',
+            'student_age' => 'required|integer',
+            'student_gender' => 'required|string',
+            'student_birthRegNo' => 'required|string',
+            'student_ic' => 'required|string|max:12',
+            'student_health' => 'required|string',
+            'student_birthPlace' => 'required|string',
+            'student_homeAddress' => 'required|string',
+        ]);
+    
+        // Find the student by ID and update the details
+        $student = Student::find($student_id);
+        if (!$student) {
+            return redirect()->back()->with('error', 'Student not found');
+        }
+    
         $student->student_name = $request->student_name;
         $student->student_age = $request->student_age;
         $student->student_gender = $request->student_gender;
@@ -113,22 +112,28 @@ class StudentRegistrationController extends Controller
         $student->student_health = $request->student_health;
         $student->student_birthPlace = $request->student_birthPlace;
         $student->student_homeAddress = $request->student_homeAddress;
-      
+    
         $student->save();
+    
         return redirect()->route('ManageStudentRegistration.StudentRegistrationList')->with('success', 'Student registration updated successfully');
     }
 
-    public function updateStatus(Request $request)
+    public function approveStudentRegistration($student_id)
     {
-        $student = Student::find($request->student_id);
-        if($student)
-        {
-                $student->student_regStatus = $request->status;
-                $student->save();
-                return response()->json(['success' => true]);
-        }
+        $student = Student::findOrFail($student_id);
+        $student->student_regStatus = 'approved'; // Update status to approved
+        $student->save();
 
-        return response()->json(['success'=>false], 400);
+        return redirect()->route('ManageStudentRegistration.StudentRegistrationList')->with('success', 'Student registration approved successfully');
+    }
+
+    public function rejectStudentRegistration($student_id)
+    {
+        $student = Student::findOrFail($student_id);
+        $student->student_regStatus = 'rejected'; // Update status to rejected
+        $student->save();
+
+        return redirect()->route('ManageStudentRegistration.StudentRegistrationList')->with('success', 'Student registration rejected successfully');
     }
 
 
@@ -143,8 +148,6 @@ class StudentRegistrationController extends Controller
         $student->delete();
         return redirect()->route('ManageStudentRegistration.StudentRegistrationList')->with('success', 'Student Registration deleted successfully');
     }
-
-   
 
 
     public function indexStudentReport(Request $request)

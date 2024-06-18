@@ -1,4 +1,3 @@
 <x-app-layout>
-    {{-- Redirect to announcementList --}}
-    <script>window.location = "/announcementList";</script>
+This is Dash Board
 </x-app-layout>

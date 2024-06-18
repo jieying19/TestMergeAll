@@ -16,8 +16,7 @@
         <form action="{{ route('ManageStudentRegistration.ViewStudentRegistrationReport') }}" method="post">
                 @csrf
         <!-- Add form inputs here -->
-        <button type="submit" class="p-2 mx-2 border border-transparent rounded-xl hover:text-gray-600">
-        style="background-color: #00AEA6;"> Generate Report</button>
+        <button type="submit" class="p-2 mx-2 border border-transparent rounded-xl hover:text-gray-600" style="background-color: #00AEA6;"> Generate Report</button>
         </form>
         </div>
         {{-- Success message if student registration information added successfully --}}
@@ -50,62 +49,65 @@
                             <td class="py-2">{{ $student->student_regStatus }}</td>
                             <td class="flex justify-center">
 
-                            @if( auth()->user()->hasRole('admin') || auth()->user()->hasRole('teacher'))
-                           <button class="btn btn-primary" onclick="openApprovalModal('{{$student_id}}')">Approval</button>
-                           @endif
-                           <button><a href="{{ route('ManageStudentRegistration.ViewStudentRegistrationForm', $student->student_id)  }}">
-                                   View
-                                </a></button>
-                               <button> <a href="{{ route('ManageStudentRegistration.EditStudentRegistrationForm', $student->student_id)  }}"method="get">
-                                   Edit
-                                </a></button>
-                                 {{-- Approval Modal --}}
-                                 <div id="approvalModal" class="hidden fixed z-10 inset-0 overflow-y-auto">
-                                    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                                        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                                            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-                                        </div>
-                                        <span class="hidden sm:inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:ma-w-lg sm:w-full">
-                                            <div><div class="mt-3 text-center sm:mt-5">
-                                                <h3 class="text-lg leading-6 front-medium text-gray-900" id="modalTitle">Approve or Reject Registration</h3>
-                                                <div class="mt-2"><p class="text-sm text-gray-500">Do you want to approve or reject this student registration?</p></div>
-                                            </div></div>
-                                            <div class="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse">
-                                                <button type="button" class="btn btn-green w-full sm:ml-3 sm:w-auto sm:text-sm" onclick="updateRegistrationStatus('approved')">Approve</button>
-                                                <button type="button" class="btn btn-red mt-3 w-full sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="updateRegistrationStatus('rejected')">Reject</button>
-                                                <button type="button" class="btn btn-gray mt-3 w-full sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="closeApprovalModal()">Cancel</button>
+                            @if(auth()->user()->role === 'KAFAadmin' || auth()->user()->role === 'teacher')
+                                    <button class="p-2 bg-blue-500 text-white rounded hover:bg-blue-600" onclick="openApprovalModal('{{ $student->student_id }}')">Approval</button>
+                            @endif
+
+                            <div class="pl-3">
+                                    <button class="p-2 bg-green-500 text-white rounded hover:bg-green-600"><a href="{{ route('ManageStudentRegistration.ViewStudentRegistrationForm', $student->student_id)  }}">View</a></button> 
+                            </div>
+                            <div class="pl-3">
+                                    <button class="p-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"> <a href="{{ route('ManageStudentRegistration.EditStudentRegistrationForm', $student->student_id)  }}"method="get">Edit</a></button>
+                            </div>
+                               
+                              {{-- Approval Modal --}}
+                        <div id="approvalModal_{{ $student->student_id }}"
+                            class="hidden approval-modal fixed z-10 inset-0 overflow-y-auto">
+                            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                                    <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                                </div>
+                                <div
+                                    class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                    <div class="sm:flex sm:items-start">
+                                        <div class="mt-3 text-center sm:mt-0 sm:text-left">
+                                            <h3 class="text-lg leading-6 font-medium text-gray-900"
+                                                id="modalTitle">Approve or Reject Registration</h3>
+                                            <div class="mt-2">
+                                                <p class="text-sm text-gray-500">Do you want to approve or reject this
+                                                    student registration?</p>
                                             </div>
-                            
-                                        </span>
-
+                                        </div>
                                     </div>
-                                 </div>
-
-                                 <script>
-                                    let currentStudentId=null;
-
-                                    function openApprovalModal(student_id){
-                                    currentStudentId = student_id;
-                                    
-
-                                    document.getElementById('approvalModal').classList,add('hidden');
-                                    }
-
-                                    function closeApprovalModal(){
-                                        document.getElementById('approvalModal').classList.add('hidden');
-
-                                    }
-
-                                    function updateRegistrationStatus(status){
-                                        if(!currentStudentId) return;
-                                        fetch('/student-registration/update-status',{method:'POST', headers;{'Content-Type':'application/json', 'X-CRSF-TOKEN':'{{csrf_token()}}' }, body: JSON.stringify({student_id:currentStudentId, status:status})}).then(response => respinse.json()).then(data => { (data.success){location.reload();
-
-                                        }else{
-                                            alert('Failed to update status'); });
-                                        
-                                           closeApprovalModal(); 
-                                    }
-                                 </script>
+                                    <div
+                                        class="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse justify-center space-x-5">
+                                        {{-- Approve Form --}}
+                                        <form
+                                            action="{{ route('approveStudentRegistration', $student->student_id) }}"
+                                            method="post">
+                                            @csrf
+                                            <button type="submit"
+                                                class="p-2 px-3 bg-green-500 text-white rounded hover:bg-green-600"
+                                                onclick="closeApprovalModal()">Approve</button>
+                                        </form>
+                                        &nbsp;&nbsp;
+                                        {{-- Reject Form --}}
+                                        <form
+                                            action="{{ route('rejectStudentRegistration', $student->student_id) }}"
+                                            method="post">
+                                            @csrf
+                                            <button type="submit"
+                                                class="p-2 px-3 bg-red-500 text-white rounded hover:bg-red-600"
+                                                onclick="closeApprovalModal()">Reject</button>
+                                        </form>
+                                        {{-- Cancel Button --}}
+                                        <button type="button"
+                                            class="p-2 px-3 bg-gray-500 text-white rounded hover:bg-gray-600"
+                                            onclick="closeApprovalModal()">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
                                 {{-- Confirmation on student registration information deletion --}}
@@ -117,9 +119,9 @@
                                 {{-- Delete student registration information --}}
                                 <form action="{{ route('deleteStudentRegistration', $student['student_id']) }}" method="post">
                                     @csrf
-                                    <button type="submit" onclick="return confirmDeleteStudentRegistration()">
-                                        Delete
-                                    </button>
+                                   <div class="pl-3"><button class="p-2 bg-red-500 text-white rounded hover:bg-red-600" type="submit" onclick="return confirmDeleteStudentRegistration()">
+                                    Delete
+                                    </button></div> 
                                 </form>
                             </td>
                     @endforeach
@@ -127,35 +129,16 @@
             </table>
         </div>
     </div>
-{{-- Confirmation dialog for approval --}}
-<script>
-        function confirmAction(student_id) {
-            const result = confirm("Do you want to approve or reject the student?");
-            if (result) {
-                const action = prompt("Type 'approve' to approve or 'reject' to reject:");
-                if (action === 'approve' || action === 'reject') {
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = `/students/${student_id}/update-status`;
-                    form.style.display = 'none';
-
-                    const tokenInput = document.createElement('input');
-                    tokenInput.name = '_token';
-                    tokenInput.value = '{{ csrf_token() }}';
-                    form.appendChild(tokenInput);
-
-                    const statusInput = document.createElement('input');
-                    statusInput.name = 'status';
-                    statusInput.value = action === 'approve' ? 'approved' : 'rejected';
-                    form.appendChild(statusInput);
-
-                    document.body.appendChild(form);
-                    form.submit();
-                } else {
-                    alert("Invalid action. Please type 'approve' or 'reject'.");
-                }
-            }
+  {{-- JavaScript to handle modal --}}
+  <script>
+        function openApprovalModal(studentId) {
+            document.getElementById('approvalModal_' + studentId).classList.remove('hidden');
         }
-</script>
-    
+
+        function closeApprovalModal() {
+            document.querySelectorAll('.approval-modal').forEach(modal => {
+                modal.classList.add('hidden');
+            });
+        }
+    </script>
 </x-app-layout>

@@ -54,9 +54,9 @@
                 <div class="flex justify-end px-4 py-2">
                     <div class="px-4">
                         <input type="submit" value="Submit" class="btn btn-success border border-slate-300 bg-emerald-500/80 px-3 py-2 rounded-xl hover:bg-emerald-400/80">
-                    </div>
-                    <div class="px-4">
-                        <button class="btn border border-slate-400 bg-gray-400 px-3 py-2 rounded-xl hover:bg-gray-300" formaction="{{route('ManageStudentRegistration.StudentRegistrationList')}}">Cancel</button>
+                   
+                    <a href="{{ route('ManageStudentRegistration.StudentRegistrationList') }}" class="btn border border-slate-300 bg-gray-400 px-3 py-2 rounded-xl hover:bg-gray-300">Cancel</a>
+                    
                     </div>
                 </div>
             </form>

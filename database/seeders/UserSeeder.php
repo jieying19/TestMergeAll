@@ -14,57 +14,58 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::factory()->create([
-            'name' => "Admin",
-            'matric_id' => "CB19000",
+            'name' => "KAFA",
             'phone_num' => "0123456789",
-            'role' => "admin",
-            'email' => "admin@test",
+            'role' => "KAFAadmin",
+            'email' => "kafa@test",
+            'parent_id' => null,
             'password' => bcrypt("test"), // password
         ]);
-        
+
+        User::factory()->create([
+            'name' => "MUIP",
+            'phone_num' => "0123456789",
+            'role' => "MUIPadmin",
+            'email' => "muip@test",
+            'parent_id' => null,
+            'password' => bcrypt("test"), // password
+        ]);
+
+        User::factory()->create([
+            'name' => "Teacher",
+            'phone_num' => "0123456789",
+            'role' => "teacher",
+            'email' => "teacher@test",
+            'parent_id' => null,
+            'password' => bcrypt("test"), // password
+        ]);
+
+        User::factory()->create([
+            'name' => "Parent",
+            'phone_num' => "0123456789",
+            'role' => "parent",
+            'email' => "parent@test",
+            'parent_id' => "PA123",
+            'password' => bcrypt("test"), // password
+        ]);
+
         User::factory()->create([
             'name' => "Wan",
-            'matric_id' => "CB21042",
             'phone_num' => "0123456789",
-            'role' => "cashier",
+            'role' => "parent",
             'email' => "wan@test",
+            'parent_id' => "PA124",
             'password' => bcrypt("test"), // password
         ]);
 
         User::factory()->create([
-            'name' => "Junta",
-            'matric_id' => "CB21001",
+            'name' => "Dude",
             'phone_num' => "0123456789",
-            'role' => "cashier",
-            'email' => "junta@test",
+            'role' => "parent",
+            'email' => "dude@test",
+            'parent_id' => "PA125",
             'password' => bcrypt("test"), // password
         ]);
 
-        User::factory()->create([
-            'name' => "Abby",
-            'matric_id' => "CB21002",
-            'phone_num' => "0123456789",
-            'role' => "cashier",
-            'email' => "abby@test",
-            'password' => bcrypt("test"), // password
-        ]);
-
-        User::factory()->create([
-            'name' => "Jie Ying",
-            'matric_id' => "CB21003",
-            'phone_num' => "0123456789",
-            'role' => "cashier",
-            'email' => "jie@test",
-            'password' => bcrypt("test"), // password
-        ]);
-        
-        User::factory()->create([
-            'name' => "Coordinator",
-            'matric_id' => "CB19002",
-            'phone_num' => "0123456789",
-            'role' => "coordinator",
-            'email' => "coordinator@test",
-            'password' => bcrypt("test"), // password
-        ]);
     }
 }

@@ -30,7 +30,7 @@
                 <table class="min-w-full table-auto">
                     <thead class="sticky top-0 bg-white">
                         <tr>
-                            <th class="text-left py-2 px-2">Matric ID</th>
+                            <th class="text-left py-2 px-2">ID</th>
                             <th class="text-left py-2 px-2">Name</th>
                             <th class="text-left py-2 px-2">Phone Number</th>
                             <th class="text-left py-2 px-2">Action</th>
@@ -39,7 +39,7 @@
                     <tbody>
                         @foreach ($users as $user)
                             <tr class="border-t border-slate-400 bg-gray-100">
-                                <td class="py-2 px-2">{{ $user->matric_id }}</td>
+                                <td class="py-2 px-2">{{ $user->id }}</td>
                                 <td class="py-2 px-2">{{ $user->name }}</td>
                                 <td class="py-2 px-2">{{ $user->phone_num }}</td>
                                 <td class="py-2 px-2 flex flex-rol h-auto">

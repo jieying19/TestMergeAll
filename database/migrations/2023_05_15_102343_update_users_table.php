@@ -13,7 +13,6 @@ return new class extends Migration
     {
         // Add new columns
         Schema::table('users', function (Blueprint $table) {
-            $table->string('matric_id')->nullable();
             $table->integer('phone_num')->nullable();
             $table->string('role')->default('admin');
         });
@@ -26,10 +25,10 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn(array_merge([
-                'matric_id',
                 'phone_num',
                 'role',
             ]));
         });
+        
     }
 };

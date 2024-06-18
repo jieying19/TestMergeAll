@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center p-1">
-                    <a href="{{ route('announcement') }}">
+                    <a href="#">
                         <img src="{{ asset('images/kafa-logo.png') }}" alt="kafa" width="40" height="80" class="p-1"/>
                     </a>
                     <p>MUIP KAFA Management System</p>
@@ -153,9 +153,6 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('announcement') }}" :active="request()->routeIs('announcement')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

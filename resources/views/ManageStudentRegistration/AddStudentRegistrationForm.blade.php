@@ -16,7 +16,7 @@
         <div class="bg-white border border-slate-300 rounded-xl w-full p-3">
             <form action="{{ route('storeStudentRegistration') }}" method="post">
                 @csrf
-                <table class="rounded-xl px-4 w-6/6">
+                <table class="rounded-xl px-4 w-full">
                     <tbody>
                         <tr>
                             <td class="px-4 py-2"><label>Student Name</label></td>
@@ -36,7 +36,7 @@
                         </tr>
                         <tr>
                             <td class="px-4 py-2"><label>Student Birth Registration Number</label></td>
-                            <td class="px-4 py-2"><input type="text" name="student_birthRegNo" class="form-control rounded-xl bg-gray-200 border border-slate-400" required></td>
+                            <td class="px-4 py-2"><input type="text" name="student_birthRegNo" class="form-control w-full rounded-xl bg-gray-200 border border-slate-400" required></td>
                         </tr>
                    
                    
