@@ -21,8 +21,8 @@ class StudentRegistrationController extends Controller
     public function index()
     {
         $students = Student::all();
-       
-        return view('ManageStudentRegistration.StudentRegistrationList',compact('students'));
+
+        return view('ManageStudentRegistration.StudentRegistrationList', compact('students'));
     }
 
     /**
@@ -39,7 +39,7 @@ class StudentRegistrationController extends Controller
     public function store(Request $request)
     {
 
-        $existingProduct = Student ::where('student_id', $request->student_id)->first();
+        $existingProduct = Student::where('student_id', $request->student_id)->first();
 
         if ($existingProduct != null) {
             return redirect()->route('ManageStudentRegistration.AddStudentRegistrationForm')->with('error', 'Student registration details already exists.');
@@ -57,7 +57,7 @@ class StudentRegistrationController extends Controller
         $student->student_homeAddress = $request->student_homeAddress;
         $student->student_regStatus = "Pending";
 
-      
+
         $student->save();
         return redirect()->route('ManageStudentRegistration.StudentRegistrationList')->with('success', 'Student registration info added successfully');
     }
@@ -79,7 +79,7 @@ class StudentRegistrationController extends Controller
         $student = Student::find($student_id);
         return view('ManageStudentRegistration.EditStudentRegistrationForm', compact('student'));
     }
-    
+
 
     /**
      * Update the specified student registration in databse.
@@ -97,13 +97,13 @@ class StudentRegistrationController extends Controller
             'student_birthPlace' => 'required|string',
             'student_homeAddress' => 'required|string',
         ]);
-    
+
         // Find the student by ID and update the details
         $student = Student::find($student_id);
         if (!$student) {
             return redirect()->back()->with('error', 'Student not found');
         }
-    
+
         $student->student_name = $request->student_name;
         $student->student_age = $request->student_age;
         $student->student_gender = $request->student_gender;
@@ -112,9 +112,9 @@ class StudentRegistrationController extends Controller
         $student->student_health = $request->student_health;
         $student->student_birthPlace = $request->student_birthPlace;
         $student->student_homeAddress = $request->student_homeAddress;
-    
+
         $student->save();
-    
+
         return redirect()->route('ManageStudentRegistration.StudentRegistrationList')->with('success', 'Student registration updated successfully');
     }
 
@@ -185,8 +185,8 @@ class StudentRegistrationController extends Controller
         // Iterate through the data and write it to the temporary file
         foreach ($students as $student) {
 
-             // Format IC number as text
-             $icNumber = "'" . $student->student_ic;
+            // Format IC number as text
+            $icNumber = "'" . $student->student_ic;
 
             fputcsv($file, [
 

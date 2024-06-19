@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id('student_id');
-            $table->string('student_name', 50);
+            $table->string('student_name', 255);
             $table->integer('student_age');
             $table->string('student_gender', 10);
             $table->string('student_birthRegNo', 10);
             $table->string('student_ic', 12);
-            $table->string('student_health', 30);
+            $table->string('student_health', 50);
             $table->string('student_birthPlace', 30);
-            $table->string('student_homeAddress',50);
+            $table->string('student_homeAddress',255);
             $table->enum('student_regStatus',["Pending","Approved","Rejected"])->nullable();
             $table->timestamps();
         });

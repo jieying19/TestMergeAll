@@ -134,7 +134,8 @@
                 <img class="ml-1 hover:text-gray-600" src="{{ asset('images/Export CSV.svg') }}"
                     style="min-height: 40%; max-height:  65%;" /></a>
 
-            <a href="#" class="p-2 mx-2 inline-flex items-center border border-transparent rounded-xl hover:text-gray-600"
+            <a href="#"
+                class="p-2 mx-2 inline-flex items-center border border-transparent rounded-xl hover:text-gray-600"
                 style="background-color: #00AEA6;" onclick="printPage()">
                 Export .pdf
                 <img class="ml-1 hover:text-gray-600" src="{{ asset('images/Export Pdf.svg') }}"
@@ -142,7 +143,8 @@
             </a>
         </div>
 
-        <div id="printable-section1" class="flex flex-col justify-between bg-white border border-slate-300 rounded-xl px-5 py-3 gap-y-11 mt-10 juj"
+        <div id="printable-section1"
+            class="flex flex-col justify-between bg-white border border-slate-300 rounded-xl px-5 py-3 gap-y-11 mt-10 juj"
             style="min-height: 60%; max-height:  80%;">
 
             <div class="flex justify-between">
@@ -171,7 +173,7 @@
                             var url = '{{ route('ManageStudentAgeData', ':range') }}';
                             url = url.replace(':range', range);
 
-                            $.get(url, function(ageData) {
+                            $.get(url, function (ageData) {
                                 console.log('Age Data:', ageData); // Log the ageData
 
                                 if (!ageData || ageData.length === 0) {
@@ -185,7 +187,7 @@
                                 data.addColumn('number', 'Count');
 
                                 // Add rows for each age group
-                                ageData.forEach(function(ageGroup) {
+                                ageData.forEach(function (ageGroup) {
                                     data.addRow([ageGroup.age, ageGroup.count]);
                                 });
 
@@ -199,18 +201,18 @@
 
                                 var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
                                 chart.draw(data, google.charts.Bar.convertOptions(options));
-                            }).fail(function() {
+                            }).fail(function () {
                                 console.error('Failed to retrieve data.');
                             });
                         }
 
                         function drawChart() {
                             // Add an event listener to the range dropdown
-                            $('#weeklySelect, #monthlySelect, #yearlySelect').on('click', function() {
+                            $('#weeklySelect, #monthlySelect, #yearlySelect').on('click', function () {
                                 event.preventDefault();
 
                                 var selectedRange = $(this).siblings
-                                ('input[name="range"]').val();
+                                    ('input[name="range"]').val();
                                 updateChart(selectedRange);
                             });
 
